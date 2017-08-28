@@ -4,12 +4,12 @@
 #     import RPi.GPIO as GPIO # TODO: Redo Beambreak class with pigpio, it just is better in every way
 # except:
 #     pass
-global pig_pi
+#global pig_pi
 
 try:
     # Import pigpio, make a global pi so each hardware instance can share it
     import pigpio
-    pig_pi = pigpio.pi()
+    #pig_pi = pigpio.pi()
 except:
     pass
 
@@ -38,13 +38,14 @@ class Beambreak:
         # Use the global pi instance
         print('at init')
         sys.stdout.flush()
-        global pig_pi
+        #global pig_pi
         try:
-            self.pig = pig_pi
-            print('got global')
-            sys.stdout.flush()
-        except NameError:
             self.pig = pigpio.pi()
+            #self.pig = pig_pi
+            #print('got global')
+            #sys.stdout.flush()
+        except NameError:
+            #self.pig = pigpio.pi()
             Warning("Global pig_pi not found, multiple pieces of hardware may not work!")
 
         # Convert pin from board to bcm numbering

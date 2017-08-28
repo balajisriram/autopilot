@@ -13,9 +13,21 @@ Notes on creating functions:
 # TODO: make it so terminal doesn't have to import pyo just to access sound info
 import pyo
 from time import sleep
+import threading
+from functools import wraps
 #from taskontrol.settings import rpisettings as rpiset
 
 # Sound list at bottom of file
+def run_threaded(func):
+
+    @wraps(func)
+    def threaded_func(*args, **kwargs):
+        func_hl = threading.Thread(target=func, args=args, kwargs=kwargs)
+        func_hl.start()
+        return func_hl
+
+    return threaded_func
+
 
 class Tone:
     '''
@@ -23,12 +35,17 @@ class Tone:
     '''
     PARAMS = ['frequency','duration','amplitude']
     def __init__(self, frequency, duration, amplitude=0.3, phase=0, **kwargs):
+        self.frequency = float(frequency)
+        self.duration = float(duration)
+        self.amplitude = float(amplitude)
 
-        sin = pyo.Sine(float(frequency),mul=float(amplitude))
-        self.table = TableWrap(sin, float(duration))
+        sin = pyo.Sine(self.frequency,mul=self.amplitude)
+        self.table = TableWrap(sin, self.duration)
 
+    @run_threaded
     def play(self):
         self.table.out()
+        sleep(self.duration/1000)
 
     def set_trigger(self, trig_fn):
         # TODO: Put this in metaclass
