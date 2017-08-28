@@ -21,6 +21,7 @@ import tables
 import json
 import threading
 import pprint
+from functools import wraps
 from core import hardware, sounds
 from collections import OrderedDict as odict
 
@@ -28,6 +29,19 @@ from collections import OrderedDict as odict
 TASK = 'Nafc'
 
 # TODO: Make meta task class that has logic for loading sounds, etc.
+
+# trying to handle callbacks threaded for pigpio, def put in utils file if kept
+# http://code.activestate.com/recipes/576684-simple-threading-decorator/
+def run_threaded(func):
+
+    @wraps(func)
+    def threaded_func(*args, **kwargs):
+        func_hl = threading.Thread(target=func, args=args, kwargs=kwargs)
+        func_hl.start()
+        return func_hl
+
+    return threaded_func
+
 
 class Nafc:
     """
@@ -289,6 +303,7 @@ class Nafc:
             #change_to_green = lambda: self.pins['LEDS']['C'].set_color([0, 255, 0])
             #self.sounds['punish'].set_trigger(change_to_green)
 
+    @run_threaded
     def handle_trigger(self, pin, level, tick):
         # All triggers call this function with their ID as an argument
         # Triggers will be functions unless they are "TIMEUP", at which point we
