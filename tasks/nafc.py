@@ -317,9 +317,13 @@ class Nafc:
         # Triggers will be functions unless they are "TIMEUP", at which point we
         # register a timeout and restart the trial
         # We get fed pins as numbers usually, convert back to letters
+        print('input pin: {}'.format(pin))
         if isinstance(pin, int):
             pin = hardware.BCM_TO_BOARD[pin]
+            print('renumbered pin: {}'.format(pin))
             pin = self.pin_id[pin]
+
+        print('formatted pin: {}'.format(pin))
 
 
         print('printing from handle_trigger')
@@ -342,9 +346,11 @@ class Nafc:
 
         # Call the trigger
         try:
+            print('called triggers: {}'.format(self.triggers[pin]))
             self.triggers[pin]()
         except TypeError:
             # Multiple triggers, call them all
+            print('calling multiple triggers')
             for trig in self.triggers[pin]:
                 trig()
         except KeyError:
