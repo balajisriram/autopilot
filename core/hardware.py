@@ -6,7 +6,10 @@
 #     pass
 
 try:
+    # Import pigpio, make a global pi so each hardware instance can share it
     import pigpio
+    global pig_pi
+    pig_pi = pigpio.pi()
 except:
     pass
 
@@ -31,8 +34,13 @@ class Beambreak:
 
     def __init__(self, pin, bounce=200, pull_ud='U', trigger_ud='D', event=None):
 
-        # Make pigpio instance
-        self.pig = pigpio.pi()
+        # Use the global pi instance
+        global pig_pi
+        try:
+            self.pig = pig_pi
+        except NameError:
+            self.pig = pigpio.pi()
+            Warning("Global pig_pi not found, multiple pieces of hardware may not work!")
 
         # Convert pin from board to bcm numbering
         self.pin = BOARD_TO_BCM[int(pin)]
