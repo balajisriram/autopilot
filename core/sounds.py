@@ -42,7 +42,7 @@ class Tone:
         sin = pyo.Sine(self.frequency,mul=self.amplitude)
         self.table = TableWrap(sin, self.duration)
 
-    @run_threaded
+    #@run_threaded
     def play(self):
         self.table.out()
         sleep(self.duration/1000)
