@@ -31,7 +31,7 @@ import argparse
 import pyo
 import threading
 import tables
-import time
+from time import sleep
 import zmq
 import multiprocessing
 from zmq.eventloop.ioloop import IOLoop
@@ -243,8 +243,7 @@ class RPilot:
         # Jackd should already be running from the launch script created by setup_pilot, we we just
         # Boot the pyo server in another process.
         self.pyo_process_class = Pyo_Process(channels=prefs['NCHANNELS'])
-        self.pyo_process_class.start()
-        self.pyo_server = self.pyo_process_class.server
+        self.pyo_server = self.pyo_process_class.run()
         self.logger.info("pyo server started")
 
     #################################################################
@@ -491,40 +490,14 @@ class Pyo_Process(multiprocessing.Process):
     def __init__(self, channels=2):
         super(Pyo_Process, self).__init__()
         self.channels = channels
-        self.daemon = False
-        self.kill_event = multiprocessing.Event()
-        self.server = None
+        self.daemon = True
 
     def run(self):
-        self.start_server()
-        self.keep_alive_thread = threading.Thread(target=self.keep_alive)
-        self.keep_alive_thread.start()
-        self.keep_alive_thread.join()
-        self.server.stop()
-        print('pyo server process has been killed')
-
-
-    def start_server(self):
         self.server = pyo.Server(audio='jack', nchnls=self.channels, duplex=0)
         self.server.setJackAuto(False, True)
         self.server.boot()
         self.server.start()
-        # keep alive
-        #threading.Timer(1, self.keep_alive).start()
-        #self.live_thread = threading.Thread(target=self.keep_alive)
-        #self.live_thread.start()
-
-        #while not self.kill:
-        #    time.sleep(1)
-
-    def keep_alive(self):
-        while not self.kill_event.is_set():
-            time.sleep(1)
-
-    def kill(self):
-        self.kill_event.set()
-
-
+        return self.server
 
 
 
