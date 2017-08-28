@@ -289,13 +289,15 @@ class Nafc:
             #change_to_green = lambda: self.pins['LEDS']['C'].set_color([0, 255, 0])
             #self.sounds['punish'].set_trigger(change_to_green)
 
-    def handle_trigger(self, pin):
+    def handle_trigger(self, pin, level, tick):
         # All triggers call this function with their ID as an argument
         # Triggers will be functions unless they are "TIMEUP", at which point we
         # register a timeout and restart the trial
         # We get fed pins as numbers usually, convert back to letters
         if isinstance(pin, int):
+            pin = hardware.BCM_TO_BOARD[pin]
             pin = self.pin_id[pin]
+
 
         print('printing from handle_trigger')
         pprint.pprint(self.triggers)
@@ -332,7 +334,7 @@ class Nafc:
         # Set the stage block so the pilot calls the next stage
         self.stage_block.set()
 
-    def center_out(self):
+    def center_out(self, pin, level, tick):
         # Called when something leaves the center pin,
         # We use this to handle the mouse leaving the port early
         if not self.discrim_finished:

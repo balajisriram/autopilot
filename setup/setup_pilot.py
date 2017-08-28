@@ -95,6 +95,8 @@ if args.naudiochannels:
 else:
     n_channels = 2
 
+# TODO: Turn this whole thing into a command line dialog and add this to it
+pigpio_location = '/home/pi/PIGPIO/pigpiod'
 
 datadir = os.path.join(basedir,'data')
 sounddir = os.path.join(basedir, 'sounds')
@@ -161,6 +163,9 @@ os.chmod(prefs_file, 0775)
 launch_file = os.path.join(basedir, 'launch_pilot.sh')
 with open(launch_file, 'w') as launch_file_open:
     launch_file_open.write('killall jackd\n') # Try to kill any existing jackd processes
+    launch_file_open.write('sudo killall pigpiod\n')
+    launch_file_open.write('sudo mount -o remount,size=128M /dev/shm\n')
+    launch_file_open.write('sudo ' + pigpio_location + '\n')
     launch_file_open.write(jackd_string+'\n')    # Then launch ours
     launch_file_open.write('sleep 1\n') # We wait a damn second to let jackd start up
     launch_string = "python " + os.path.join(repo_loc, "core", "pilot.py") + " -f " + prefs_file
