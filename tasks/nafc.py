@@ -303,7 +303,7 @@ class Nafc:
             #change_to_green = lambda: self.pins['LEDS']['C'].set_color([0, 255, 0])
             #self.sounds['punish'].set_trigger(change_to_green)
 
-    @run_threaded
+    #@run_threaded
     def handle_trigger(self, pin, level, tick):
         # All triggers call this function with their ID as an argument
         # Triggers will be functions unless they are "TIMEUP", at which point we
