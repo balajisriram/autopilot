@@ -246,14 +246,20 @@ class Nafc:
             if type == 'POKES':
                 print('reached pokes')
                 for pin, handler in values.items():
+                    print(pin)
                     try:
                         # Instantiate poke class, assign callback, and make reverse dict
                         self.pins[type][pin] = handler(pin_numbers[type][pin])
+                        print('nafc - instantiated pin')
+                        sys.stdout.flush()
                         self.pins[type][pin].assign_cb(self.handle_trigger)
+                        print('nafc - assigned cb')
+                        sys.stdout.flush()
                         self.pin_id[pin_numbers[type][pin]] = pin
                         # If center port, add an additional callback for when something leaves it
                         if pin == 'C':
                             print('at second C cb')
+                            sys.stdout.flush()
                             self.pins[type][pin].assign_cb(self.center_out, manual_trigger='U', add=True)
                     except:
                         # TODO: More informative exception
