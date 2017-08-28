@@ -4,17 +4,18 @@
 #     import RPi.GPIO as GPIO # TODO: Redo Beambreak class with pigpio, it just is better in every way
 # except:
 #     pass
+global pig_pi
 
 try:
     # Import pigpio, make a global pi so each hardware instance can share it
     import pigpio
-    global pig_pi
     pig_pi = pigpio.pi()
 except:
     pass
 
 import threading
 import time
+import sys
 
 # pigpio only uses BCM numbers, we need to translate them
 # See https://www.element14.com/community/servlet/JiveServlet/previewBody/73950-102-11-339300/pi3_gpio.png
@@ -35,9 +36,13 @@ class Beambreak:
     def __init__(self, pin, bounce=200, pull_ud='U', trigger_ud='D', event=None):
 
         # Use the global pi instance
+        print('at init')
+        sys.stdout.flush()
         global pig_pi
         try:
             self.pig = pig_pi
+            print('got global')
+            sys.stdout.flush()
         except NameError:
             self.pig = pigpio.pi()
             Warning("Global pig_pi not found, multiple pieces of hardware may not work!")
@@ -68,6 +73,8 @@ class Beambreak:
         self.callbacks = []
 
         # Setup pin
+        print('at setup')
+        sys.stdout.flush()
         self.pig.set_mode(self.pin, pigpio.INPUT)
         self.pig.set_pull_up_down(self.pin, self.pull_ud)
 
