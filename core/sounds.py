@@ -45,7 +45,7 @@ class Tone:
     #@run_threaded
     def play(self):
         self.table.out()
-        sleep(self.duration/1000)
+        #sleep(self.duration/1000)
 
     def set_trigger(self, trig_fn):
         # TODO: Put this in metaclass
