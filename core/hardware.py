@@ -1,9 +1,9 @@
 # Classes that house hardware logic
 
-try:
-    import RPi.GPIO as GPIO # TODO: Redo Beambreak class with pigpio, it just is better in every way
-except:
-    pass
+# try:
+#     import RPi.GPIO as GPIO # TODO: Redo Beambreak class with pigpio, it just is better in every way
+# except:
+#     pass
 
 try:
     import pigpio
@@ -66,7 +66,7 @@ class Beambreak:
     def assign_cb(self, callback_fn, add=False, evented=False, manual_trigger=None):
         # If we aren't adding, we clear the existing callback
         if not add:
-            GPIO.remove_event_detect(self.pin)
+            self.clear_cb()
 
         # We can set the direction of the trigger manually,
         # for example if we want to set 'BOTH' only sometimes
