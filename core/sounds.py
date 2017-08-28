@@ -58,7 +58,6 @@ class File:
         pass
 
     def play(self):
-        # test
         pass
 
 def TableWrap(audio,duration):
