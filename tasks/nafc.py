@@ -244,6 +244,7 @@ class Nafc:
             # Then switch depending on the type
             # First IR beambreak nosepokes
             if type == 'POKES':
+                print('reached pokes')
                 for pin, handler in values.items():
                     try:
                         # Instantiate poke class, assign callback, and make reverse dict
