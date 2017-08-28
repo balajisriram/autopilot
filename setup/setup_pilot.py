@@ -96,7 +96,7 @@ else:
     n_channels = 2
 
 # TODO: Turn this whole thing into a command line dialog and add this to it
-pigpio_location = '/home/pi/PIGPIO/pigpiod'
+pigpio_location = '/home/pi/PIGPIO/pidpiod'
 
 
 datadir = os.path.join(basedir,'data')
