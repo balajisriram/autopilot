@@ -40,7 +40,7 @@ class Noise:
     White Noise straight up
     '''
     PARAMS = ['duration','amplitude']
-    def __init__(self, duration, amplitude=0.3, **kwargs):
+    def __init__(self, duration, amplitude, **kwargs):
         noiser = pyo.Noise(mul=float(amplitude))
         self.table = TableWrap(noiser,float(duration))
 
