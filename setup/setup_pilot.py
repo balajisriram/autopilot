@@ -99,7 +99,7 @@ else:
 pigpio_location = '/home/pi/PIGPIO/pigpiod'
 # Need to make a binary mask that excludes the pins needed for hifiberry
 # (BCM: 2, 3, 18, 19, 20, 21)
-pigpio_mask = '-x 0b1111110000111111111111110000'
+pigpio_mask = '-x 1111110000111111111111110000'
 # Also need to use PWM rather than PCM so hifiberry can use it
 # see http://abyz.co.uk/rpi/pigpio/faq.html#Sound_isnt_working
 pigpio_device = '-t 0'
