@@ -477,7 +477,7 @@ class Terminal(QtGui.QMainWindow):
             for mouse, protocol in mouse_protocols.items():
                 step = protocol[1]
                 protocol = protocol[0]
-                if self.mice[mouse].protocol_name != protocol:
+                if (self.mice[mouse].protocol_name != protocol) or (self.mice[mouse].step != step):
                     self.logger.info('Setting {} protocol from {} to {}'.format(mouse, self.mice[mouse].protocol_name, protocol))
                     protocol_file = os.path.join(self.prefs['PROTOCOLDIR'], protocol + '.json')
                     self.mice[mouse].assign_protocol(protocol_file, step)
