@@ -149,8 +149,8 @@ if __name__ == "__main__":
 
     with open(prof_file, 'a+') as profile:
         profile.write(alias_cmd)
-
-    subprocess.call(['alias', 'terminal=\'{}\''.format(launch_file)])
+    print(launch_file)
+    subprocess.call(['alias', 'terminal=\'{}\''.format(launch_file)],shell=True)
 
     print('Attempted to create alias \'terminal\' to launch file {}'.format(launch_file))
 
